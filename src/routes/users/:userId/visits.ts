@@ -1,15 +1,34 @@
 import { FastifyPluginAsync } from "fastify"
+import { getVisitsByUser } from "../../../service/userService";
+import { CompanyLastVisit } from "../../../models/CompanyLastVisit";
 
 interface IParams {
   userId: string;
 }
 
-const example: FastifyPluginAsync = async (fastify, _opts): Promise<void> => {
+interface IReply {
+  200: {
+    visits: CompanyLastVisit[];
+  },
+  404: {
+    reason: string;
+  },
+  501: {
+    reason: string;
+  }
+}
+
+const example: FastifyPluginAsync = async (fastify): Promise<void> => {
   fastify.get<{
-    Params: IParams
-  }>('/visits', async function (request, _reply) {
-    return {
-      userId: request.params.userId
+    Params: IParams,
+    Reply: IReply
+  }>('/visits', async function (request, reply) {
+    try{
+      const result = await getVisitsByUser(fastify, request.params.userId);
+      reply.code(200).send({ visits: result });
+    } catch(e) {
+      console.error(e)
+      reply.code(404).send({ reason: "User not found"})
     }
   })
 }
