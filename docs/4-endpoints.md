@@ -38,8 +38,8 @@ GET /companies/01922398-d70d-7e0f-9e6d-2c981c2c2231
 
 {
     "company": {
-        "name": StarApps,
-        "location": Ghent
+        "name": "StarApps",
+        "location": "Ghent"
     },
     "links": {
         "visit": "/companies/01922398-d70d-7e0f-9e6d-2c981c2c2231/visit"
