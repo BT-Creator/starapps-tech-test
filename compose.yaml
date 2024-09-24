@@ -3,10 +3,14 @@ services:
     image: postgres:16.4-alpine
     restart: always
     environment:
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data 
- 
+      - pgdata:/var/lib/postgresql/data
+      - ./migrations/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./migrations/populate_tables.sql:/docker-entrypoint-initdb.d/populate_tables.sql
 volumes:
   pgdata:
