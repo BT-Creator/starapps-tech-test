@@ -2,6 +2,7 @@ import { FastifyPluginAsync } from "fastify"
 import { getVisitsByUser } from "../../../service/userService";
 import { CompanyLastVisit } from "../../../models/CompanyLastVisit";
 import { BadRequestError } from "../../../errors/BadRequestError";
+import { NotFoundError } from "../../../errors/NotFoundError";
 
 interface IParams {
   userId: string;
@@ -17,7 +18,7 @@ interface IReply {
   400: {
     reason: string;
   },
-  501: {
+  500: {
     reason: string;
   }
 }
@@ -27,6 +28,7 @@ const example: FastifyPluginAsync = async (fastify): Promise<void> => {
     Params: IParams,
     Reply: IReply
   }>('/visits', async function (request, reply) {
+
     if (!request.params.userId) {
       reply.code(400).send({ reason: "No user ID was provided!" })
     }
@@ -38,9 +40,10 @@ const example: FastifyPluginAsync = async (fastify): Promise<void> => {
       } catch (e) {
         if (e instanceof BadRequestError) {
           reply.code(400).send({ reason: e.message });
+        } else if(e instanceof NotFoundError){
+          reply.code(404).send({ reason: `UserId ${request.params.userId} not found` })
         } else {
-          console.error(e)
-          reply.code(404).send({ reason: "User not found" })
+          reply.code(500).send({ reason: "Whops! Something went wrong on our end. Try later again!" });
         }
       }
     }
