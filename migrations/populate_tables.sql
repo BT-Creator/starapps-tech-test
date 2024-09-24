@@ -299,4 +299,3 @@ insert into user_visits (user_id, company_id, visit_time) values ('4e02a2a0-a7c1
 insert into user_visits (user_id, company_id, visit_time) values ('0c9d8da8-4ff7-4c9b-9e1a-efeaaa828c00', '7b6c390b-bace-4cd0-8ba4-fdc45e8fdb51', '2024-09-30 21:31:06');
 insert into user_visits (user_id, company_id, visit_time) values ('889f9ce5-6bce-4cf6-9f0b-c8bc570a1881', 'd4a3bfe4-4b59-4d5f-9e28-a654737cbdef', '2024-09-28 07:23:57');
 insert into user_visits (user_id, company_id, visit_time) values ('c19d1a50-bbec-4564-a5ec-f09ebe00055c', '2a06e822-bc2f-4db1-87cd-e69dec6a3bd9', '2024-09-26 20:21:40');
-insert into user_visits (user_id, company_id, visit_time) values ('9b410e5b-4e5d-479f-bcdd-6ceae338d5f0', 'db706c46-91c1-485f-a123-6d85c2ff8dda', '2024-09-26 17:51:21');

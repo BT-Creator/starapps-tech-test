@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from "fastify"
-import { getVisitsByUser } from "../../../service/userService";
+import { get100LatestVisitsByUser } from "../../../service/userService";
 import { CompanyLastVisit } from "../../../models/CompanyLastVisit";
 import { BadRequestError } from "../../../errors/BadRequestError";
 import { NotFoundError } from "../../../errors/NotFoundError";
@@ -35,12 +35,12 @@ const example: FastifyPluginAsync = async (fastify): Promise<void> => {
 
     else {
       try {
-        const result = await getVisitsByUser(fastify, request.params.userId);
+        const result = await get100LatestVisitsByUser(fastify, request.params.userId);
         reply.code(200).send({ visits: result });
       } catch (e) {
         if (e instanceof BadRequestError) {
           reply.code(400).send({ reason: e.message });
-        } else if(e instanceof NotFoundError){
+        } else if (e instanceof NotFoundError) {
           reply.code(404).send({ reason: `UserId ${request.params.userId} not found` })
         } else {
           reply.code(500).send({ reason: "Whops! Something went wrong on our end. Try later again!" });
