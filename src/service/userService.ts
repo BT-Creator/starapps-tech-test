@@ -42,6 +42,8 @@ export async function get100LatestVisitsByUser(fastify: FastifyInstance, userId:
         if (e instanceof NotFoundError) {
             throw e;
         }
+        console.log(e);
+        throw e;
     }
     finally {
         client.release();
