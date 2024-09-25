@@ -1,7 +1,7 @@
 import { FastifyPluginAsync, FastifyReply } from "fastify";
-import { logCompanyVisit } from "../../../service/companyService";
-import { BadRequestError } from "../../../errors/BadRequestError";
-import { NotFoundError } from "../../../errors/NotFoundError";
+import { logCompanyVisit } from "../../service/companyService";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 interface IParams {
     companyId: string;
@@ -18,12 +18,16 @@ interface IBody {
     timestamp: string;
 }
 
+/* 
+    Because Windows doesn't support having ":" in folder names,
+    we needed to move the dynmaic part of the link in the route itself
+*/
 const route: FastifyPluginAsync = async (fastify): Promise<void> => {
     fastify.post<{
         Params: IParams,
         Reply: IReply,
         Body: IBody
-    }>('/visit', async function (request, reply) {
+    }>('/:companyId/visit', async function (request, reply) {
         if (!request.body.userId || !request.body.timestamp) {
             reply.badRequest(`Missing required fields in request body:${(!request.body.userId ? " userId" : '')}${(!request.body.timestamp ? " timestamp" : '')}`);
         } else if(isNaN(Date.parse(request.body.timestamp))) {

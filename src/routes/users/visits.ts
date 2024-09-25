@@ -1,8 +1,8 @@
 import { FastifyPluginAsync, FastifyReply } from "fastify"
-import { get100LatestVisitsByUser } from "../../../service/userService";
-import { CompanyLastVisit } from "../../../types/CompanyLastVisit";
-import { BadRequestError } from "../../../errors/BadRequestError";
-import { NotFoundError } from "../../../errors/NotFoundError";
+import { get100LatestVisitsByUser } from "../../service/userService";
+import { CompanyLastVisit } from "../../types/CompanyLastVisit";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 interface IParams {
   userId: string;
@@ -16,11 +16,16 @@ interface IReply {
   '5xx': FastifyReply
 }
 
+
+/* 
+    Because Windows doesn't support having ":" in folder names,
+    we needed to move the dynmaic part of the link in the route itself
+*/
 const route: FastifyPluginAsync = async (fastify): Promise<void> => {
   fastify.get<{
     Params: IParams,
     Reply: IReply
-  }>('/visits', async function (request, reply) {
+  }>('/:userId/visits', async function (request, reply) {
     if (!request.params.userId) { reply.badRequest("No user ID was provided!") }
     else {
       try {
