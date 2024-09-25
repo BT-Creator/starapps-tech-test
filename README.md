@@ -13,8 +13,8 @@ If you want to this this project, you can do this by using the included `compose
     docker compose --profile testing up -d
     ```
 
-    > [!CAUTION]
-    > Make sure to include the `--profile testing` option, otherwise you will only active the database
+> [!CAUTION]
+> Make sure to include the `--profile testing` option, otherwise you will only active the database
 
 After the container have been setup, you should be able to reach the API on [`localhost:3000`](http://localhost:3000/feed).
 
