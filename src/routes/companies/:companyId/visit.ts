@@ -25,7 +25,9 @@ const route: FastifyPluginAsync = async (fastify): Promise<void> => {
         Body: IBody
     }>('/visit', async function (request, reply) {
         if (!request.body.userId || !request.body.timestamp) {
-            reply.badRequest(`Missing required fields in request body: ${(!request.body.userId && "userId")} ${(!request.body.timestamp && "timestamp")}`);
+            reply.badRequest(`Missing required fields in request body:${(!request.body.userId ? " userId" : '')}${(!request.body.timestamp ? " timestamp" : '')}`);
+        } else if(isNaN(Date.parse(request.body.timestamp))) {
+            reply.badRequest("Invalid timestamp format. Use ISO 8601 format")
         } else if(new Date(request.body.timestamp).getTime() > Date.now()) {
             reply.badRequest("Timestamp cannot be in the future")
         }
@@ -43,6 +45,7 @@ const route: FastifyPluginAsync = async (fastify): Promise<void> => {
                 } else if (e instanceof NotFoundError) {
                     reply.notFound(e.message);
                 } else {
+                    console.error(e);
                     reply.internalServerError("Whops! Something went wrong on our end. Try later again!");
                 }
             }
