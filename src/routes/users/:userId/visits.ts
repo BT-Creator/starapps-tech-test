@@ -21,22 +21,15 @@ const route: FastifyPluginAsync = async (fastify): Promise<void> => {
     Params: IParams,
     Reply: IReply
   }>('/visits', async function (request, reply) {
-    if (!request.params.userId) {
-      reply.badRequest("No user ID was provided!")
-    }
-
+    if (!request.params.userId) { reply.badRequest("No user ID was provided!") }
     else {
       try {
         const result = await get100LatestVisitsByUser(fastify, request.params.userId);
         reply.code(200).send({ visits: result });
       } catch (e) {
-        if (e instanceof BadRequestError) {
-          reply.badRequest(e.message)
-        } else if (e instanceof NotFoundError) {
-          reply.notFound(`UserId ${request.params.userId} does not exist` )
-        } else {
-          reply.internalServerError("Whops! Something went wrong on our end. Try later again!")
-        }
+        if (e instanceof BadRequestError) { reply.badRequest(e.message) } 
+        else if (e instanceof NotFoundError) { reply.notFound(`UserId ${request.params.userId} does not exist` ) } 
+        else { reply.internalServerError("Whops! Something went wrong on our end. Try later again!") }
       }
     }
   })
