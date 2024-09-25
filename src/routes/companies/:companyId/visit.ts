@@ -31,8 +31,12 @@ const route: FastifyPluginAsync = async (fastify): Promise<void> => {
         }
         else {
             try {
-                await logCompanyVisit(fastify, request.params.companyId, request.body.userId, request.body.timestamp);
-                reply.code(201).send();
+                const added = await logCompanyVisit(fastify, request.params.companyId, request.body.userId, request.body.timestamp);
+                if(added) {
+                    reply.code(201).send();
+                } else {
+                    reply.internalServerError("Unable to add the log at this time. Try again later");
+                }                    
             } catch (e) {
                 if (e instanceof BadRequestError) {
                     reply.badRequest(e.message);
