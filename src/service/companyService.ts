@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { InsertCompanyVisit } from "../repositories/companyRepository";
+import { getTrendingCompanies, InsertCompanyVisit } from "../repositories/companyRepository";
+import { CompanyBase } from "../types/CompanyBase";
 
 /**
  * Function that logs the visit of a user to a company
@@ -20,4 +21,8 @@ export async function logCompanyVisit(
     timestamp: string): Promise<boolean> {
     const added = await InsertCompanyVisit(fastify, userId, companyId, timestamp);
     return added;
+}
+
+export async function fetchTrendingCompanies(fastify: FastifyInstance): Promise<CompanyBase[]> {
+    return await getTrendingCompanies(fastify);
 }
