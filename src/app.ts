@@ -9,6 +9,7 @@ export interface AppOptions extends FastifyServerOptions, Partial<AutoloadPlugin
 }
 // Pass --options via CLI arguments in command to enable these options.
 const options: AppOptions = {
+  
 }
 
 const app: FastifyPluginAsync<AppOptions> = async (
@@ -16,7 +17,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
     opts
 ): Promise<void> => {
   await fastify.register(fastifyEnv, envOptions);
-
   /**
    * This loads all plugins defined in plugins and 
    * are reused throughout the application
@@ -34,6 +34,8 @@ const app: FastifyPluginAsync<AppOptions> = async (
     dir: join(__dirname, 'routes'),
     options: opts
   })
+
+  
 };
 
 export default app;

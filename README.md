@@ -1,27 +1,39 @@
-# Available Scripts
+# StarrApps Technical Test
+
+This repo contains the contents of the StarApps Technical Apps, performed by Bo Robbrecht
+
+## Testing this project
+
+If you want to this this project, you can do this by using the included `compose.yaml` and `.env.example` file.
+
+1. Duplicate the `.env.example` and rename it to `.env`.
+2. Execute the following command:  
+
+    ```bash
+    docker compose --profile testing up -d
+    ```
+
+> [!CAUTION]
+> Make sure to include the `--profile testing` option, otherwise you will only active the database
+
+After the container have been setup, you should be able to reach the API on [`localhost:3000`](http://localhost:3000/feed).
+
+## NPM Scripts
 
 In the project directory, you can run:
 
-## `npm run dev`
+### `npm run dev`
 
 To start the app in dev mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## `npm start`
+### `npm start`
 
 For production mode
 
-## `npm run test`
+## Using the API
 
-Run the test cases.
-
-# Learn More
-
-To learn Fastify, check out the [Fastify documentation](https://fastify.dev/docs/latest/).
-
-# Using the API
-
-## `GET /users/:userId/visits`
+### `GET /users/:userId/visits`
 This endpoint returns the last 100 companies visited by a user.
 In order to test the diffent cases, you can call the following URLs:
 
@@ -31,7 +43,7 @@ In order to test the diffent cases, you can call the following URLs:
 - GET `http://localhost:3000/users/01922545-cbc3-7978-a5fa-e783f82f05f1/visits` uses a non-existant UUID and sends this to the server
 - GET `http://localhost:3000/users//visits` uses **no** UUID and sends it to the server
 
-## `POST /companies/:companyId/visit`
+### `POST /companies/:companyId/visit`
 
 This endpoint insert a visit of an company by using a timestamp & userId
 In order to test the diffent cases, you can call the following URLs with the appropriate body:
@@ -87,7 +99,7 @@ In order to test the diffent cases, you can call the following URLs with the app
     }
     ```
 
-# GET `/feed`
+### GET `/feed`
 
 This endpoint returns the most popular companies in a 24h timespan based on unique visitors.
 You can test this URL by calling the following endpoint:
