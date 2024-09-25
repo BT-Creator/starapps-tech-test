@@ -1,4 +1,4 @@
-import { FastifyPluginAsync } from "fastify";
+import { FastifyPluginAsync, FastifyReply } from "fastify";
 
 interface IParams {
     companyId: string;
@@ -6,18 +6,8 @@ interface IParams {
   
 interface IReply {
     201: never,
-    404: {
-        reason: string;
-    },
-    400: {
-        reason: string;
-    },
-    500: {
-        reason: string;
-    };
-    501: {
-        reason: string;
-    }
+    '4xx': FastifyReply,
+    '5xx': FastifyReply
 }
 
 interface IBody {
@@ -31,7 +21,11 @@ const route: FastifyPluginAsync = async (fastify): Promise<void> => {
         Reply: IReply,
         Body: IBody
     }>('/visit', async function (request, reply) {
-        reply.code(501).send({ reason: `Not yet implemented; ${request.params.companyId} | ${request.body.timestamp} | ${request.body.userId}` });
+        if (!request.body.userId || !request.body.timestamp) {
+            reply.badRequest(`Missing required fields in request body: ${(!request.body.userId && "userId")} ${(!request.body.timestamp && "timestamp")}`);
+        } else {
+            reply.notImplemented(`Not yet implemented; ${request.params.companyId} | ${request.body.timestamp} | ${request.body.userId}`)
+        }
     })
 }
 

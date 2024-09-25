@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { CompanyLastVisit } from "../models/CompanyLastVisit";
+import { CompanyLastVisit } from "../types/CompanyLastVisit";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { DatabaseError } from "pg";

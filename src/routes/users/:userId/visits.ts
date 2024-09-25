@@ -1,6 +1,6 @@
-import { FastifyPluginAsync } from "fastify"
+import { FastifyPluginAsync, FastifyReply } from "fastify"
 import { get100LatestVisitsByUser } from "../../../service/userService";
-import { CompanyLastVisit } from "../../../models/CompanyLastVisit";
+import { CompanyLastVisit } from "../../../types/CompanyLastVisit";
 import { BadRequestError } from "../../../errors/BadRequestError";
 import { NotFoundError } from "../../../errors/NotFoundError";
 
@@ -12,15 +12,8 @@ interface IReply {
   200: {
     visits: CompanyLastVisit[];
   },
-  404: {
-    reason: string;
-  },
-  400: {
-    reason: string;
-  },
-  500: {
-    reason: string;
-  }
+  '4xx': FastifyReply,
+  '5xx': FastifyReply
 }
 
 const route: FastifyPluginAsync = async (fastify): Promise<void> => {
@@ -28,9 +21,8 @@ const route: FastifyPluginAsync = async (fastify): Promise<void> => {
     Params: IParams,
     Reply: IReply
   }>('/visits', async function (request, reply) {
-
     if (!request.params.userId) {
-      reply.code(400).send({ reason: "No user ID was provided!" })
+      reply.badRequest("No user ID was provided!")
     }
 
     else {
@@ -39,11 +31,11 @@ const route: FastifyPluginAsync = async (fastify): Promise<void> => {
         reply.code(200).send({ visits: result });
       } catch (e) {
         if (e instanceof BadRequestError) {
-          reply.code(400).send({ reason: e.message });
+          reply.badRequest(e.message)
         } else if (e instanceof NotFoundError) {
-          reply.code(404).send({ reason: `UserId ${request.params.userId} not found` })
+          reply.notFound(`UserId ${request.params.userId} does not exist` )
         } else {
-          reply.code(500).send({ reason: "Whops! Something went wrong on our end. Try later again!" });
+          reply.internalServerError("Whops! Something went wrong on our end. Try later again!")
         }
       }
     }
