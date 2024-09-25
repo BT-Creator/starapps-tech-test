@@ -23,7 +23,7 @@ interface IReply {
   }
 }
 
-const example: FastifyPluginAsync = async (fastify): Promise<void> => {
+const route: FastifyPluginAsync = async (fastify): Promise<void> => {
   fastify.get<{
     Params: IParams,
     Reply: IReply
@@ -50,4 +50,4 @@ const example: FastifyPluginAsync = async (fastify): Promise<void> => {
   })
 }
 
-export default example;
+export default route;
