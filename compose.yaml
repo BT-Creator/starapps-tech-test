@@ -12,5 +12,25 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./migrations/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - ./migrations/populate_tables.sql:/docker-entrypoint-initdb.d/populate_tables.sql
+  
+  web-prod:
+    build:
+      context: .
+      dockerfile: dockerfile
+    profiles:
+      - testing
+    environment:
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      FASTIFY_PORT: 3000
+      FASTIFY_HOST: 0.0.0.0
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    
 volumes:
   pgdata:
