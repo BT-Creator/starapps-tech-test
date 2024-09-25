@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { DatabaseError } from "pg";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
+import { CompanyBase } from "../types/CompanyBase";
 /**
  * Inserts an company visit into the database
  * @param fastify The Fastify instance
@@ -36,6 +37,25 @@ export async function InsertCompanyVisit(fastify: FastifyInstance, userId: strin
         throw e;
     } 
     finally {
+        client.release();
+    }
+}
+/**
+ * Returns the most visited companyIds in the last 24 hours
+ * @param fastify The Fastify instance
+ * @returns An array of 0 or more length containing the ids of the companies
+ */
+export async function getTrendingCompanies(fastify: FastifyInstance): Promise<CompanyBase[]> {
+    const client = await fastify.pg.connect();
+    try {
+        const res = await client.query<CompanyBase>(
+            `SELECT company_id, COUNT(DISTINCT user_id) AS unique_visitors
+             FROM user_visits
+             WHERE visit_time >= NOW() - INTERVAL '24 hours'
+             GROUP BY company_id
+             ORDER BY unique_visitors DESC`);
+        return res.rows;
+    } finally {
         client.release();
     }
 }

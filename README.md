@@ -85,3 +85,4 @@ In order to test the diffent cases, you can call the following URLs with the app
     {
 	"userId": "4e02a2-a7c1-4ea6-9c4a-fc9c57d0e17f"
     }
+    ```
