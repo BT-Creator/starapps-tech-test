@@ -6,9 +6,15 @@ This repo contains the contents of the StarApps Technical Apps, performed by Bo 
 
 If you want to this this project, you can do this by using the included `compose.yaml` and `.env.example` file.
 
-1. Duplicate the `.env.example` and rename it to `.env`.
-2. Execute the following command:  
-
+1. Open your terminal of choice and clone this repository
+    ```bash
+    git clone https://github.com/BT-Creator/starapps-tech-test.git
+    ```
+2) Go into the folder, duplicate the `.env.example` and rename it to `.env`
+    ```bash
+    mv .env.example .env 
+    ```
+2. Execute the following command to start up the project:  
     ```bash
     docker compose --profile testing up -d
     ```
@@ -16,7 +22,10 @@ If you want to this this project, you can do this by using the included `compose
 > [!CAUTION]
 > Make sure to include the `--profile testing` option, otherwise you will only active the database
 
-After the container have been setup, you should be able to reach the API on [`localhost:3000`](http://localhost:3000/feed).
+After the container have been build & deployed, you should be able to reach the API on [`localhost:3000`](http://localhost:3000/feed).
+
+> [!NOTE]
+> The database will be automatically populated with mock data, so that you can test the application
 
 ## NPM Scripts
 
